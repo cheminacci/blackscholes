@@ -1,6 +1,7 @@
 // blackscholes.hpp
 
 #pragma once
+
 #include "scinge.hpp"
 #include <vector>
 #include <cmath>

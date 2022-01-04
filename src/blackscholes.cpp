@@ -1,6 +1,6 @@
 // blackscholes.cpp
 
-#include "blackscholes.h"
+#include "blackscholes.hpp"
 
 using std::numbers::pi;
 
@@ -15,7 +15,7 @@ double normal_cdf(const double& x)
     if (x >= 0.0) 
 	{	return ( 1.0 - (1.0 / (pow(2 * pi, 0.5) ) ) * exp(-0.5 * x * x) * k_sum) ;}
 	else 
-	{	return 1.0 - normal_cdf(-1 * x); }
+	{	return 1.0 - normal_cdf(-x); }
 }
 
 double normal_pdf(double& x)
@@ -28,6 +28,8 @@ double call_option_price(Option& opt)
 	d1 = (log(opt.spot_price[0]/opt.strike_price) + (opt.interest_rate + pow(sigma(opt),2)/2 ) * opt.time_to_maturity) / ( sigma(opt) * sqrt(opt.time_to_maturity) ) ;
 	d2 = d1 - ( sigma(opt) * sqrt(opt.time_to_maturity) ) ;
 
-	return (normal_cdf(d1) * opt.spot_price[0]) - (opt.strike_price * exp(-1 * opt.interest_rate * opt.time_to_maturity) * normal_cdf(d2)) ;
+	return (normal_cdf(d1) * opt.spot_price[0]) - (opt.strike_price * exp(-opt.interest_rate * opt.time_to_maturity) * normal_cdf(d2)) ;
 }
 
+double put_option_price(Option& opt)
+{	return ( opt.strike_price * exp(-opt.interest_rate * opt.time_to_maturity) ) - opt.spot_price[0] + call_option_price(opt) ;}
