@@ -18,12 +18,14 @@ struct Option
 	double time_to_maturity;	
 };
 
-double sigma(Option& opt);
+constexpr double sigma(Option& opt);
 
-double normal_cdf(const double& x); 	
+constexpr double sigma_percent(Option& opt);
 
-double normal_pdf(const double& x); 
+constexpr double normal_cdf(const double& x); 	
 
-double call_option_price(Option& opt);	
+constexpr double normal_pdf(const double& x); 
+
+constexpr double call_option_price(Option& opt);	
 
 
