@@ -21,6 +21,9 @@ constexpr double normal_cdf(const double& x)
 	{	return 1.0 - normal_cdf(-x); }
 }
 
+constexpr double my_normal_cdf(const double& x, const double& mean, const double& sigma)
+{	return ( 1.0 / (sigma * sqrt(2*pi)) ) * -exp( -0.5 * pow(((x - mean) / sigma) , 2) ) ;}
+
 constexpr double normal_pdf(double& x)
 {	return pow((pi * 2), -0.5) * exp(-0.5 * x * x) ; }
 
@@ -31,7 +34,7 @@ constexpr double call_option_price(Option& opt)
 	d1 = (log(opt.spot_price[0]/opt.strike_price) + (opt.interest_rate + pow(sigma_percent(opt),2)/2 ) * opt.time_to_maturity) / ( sigma_percent(opt) * sqrt(opt.time_to_maturity) ) ;
 	d2 = d1 - ( sigma_percent(opt) * sqrt(opt.time_to_maturity) ) ;
 
-	return (normal_cdf(d1) * opt.spot_price[0]) - (opt.strike_price * exp(-opt.interest_rate * opt.time_to_maturity) * normal_cdf(d2)) ;
+	return (my_normal_cdf(d1, scinge::average(opt.spot_price), sigma_percent(opt)) * opt.spot_price[0]) - (opt.strike_price * exp(-opt.interest_rate * opt.time_to_maturity) * my_normal_cdf(d2, scinge::average(opt.spot_price), sigma_percent(opt))) ;
 }
 
 constexpr double put_option_price(Option& opt)
