@@ -1,4 +1,4 @@
-#include "blackscholes.cpp"
+#include "blackscholes.hpp"
 #include <iostream>
 
 int main()
