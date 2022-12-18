@@ -3,6 +3,7 @@
 #pragma once
 
 #include "scinge.hpp"
+#include <array>
 #include <vector>
 #include <cmath>
 #include <numbers>
