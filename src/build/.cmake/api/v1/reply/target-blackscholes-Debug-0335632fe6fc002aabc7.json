@@ -38,7 +38,7 @@
 					"fragment" : "-O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -lm -g"
 				},
 				{
-					"fragment" : "-std=gnu++20"
+					"fragment" : "-std=gnu++23"
 				}
 			],
 			"language" : "CXX",
@@ -48,7 +48,7 @@
 				[
 					1
 				],
-				"standard" : "20"
+				"standard" : "23"
 			},
 			"sourceIndexes" : 
 			[

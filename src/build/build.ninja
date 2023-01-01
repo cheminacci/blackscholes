@@ -51,7 +51,7 @@ build cmake_object_order_depends_target_blackscholes: phony || CMakeFiles/blacks
 
 build CMakeFiles/blackscholes.dir/main.cpp.o: CXX_COMPILER__blackscholes_Debug /home/cheminacci/blackscholes/src/main.cpp || cmake_object_order_depends_target_blackscholes
   DEP_FILE = CMakeFiles/blackscholes.dir/main.cpp.o.d
-  FLAGS = -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -lm -g -std=gnu++20
+  FLAGS = -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -lm -g -std=gnu++23
   OBJECT_DIR = CMakeFiles/blackscholes.dir
   OBJECT_FILE_DIR = CMakeFiles/blackscholes.dir
 

@@ -55,7 +55,7 @@ namespace scinge
 		const double mean = average(value);
 		auto mod = [mean](auto &x){return pow((x-mean),2);};
 
-		return sqrt( std::transform_reduce(begin(value), end(value), 0.0, std::plus{}, mod) / static_cast<double>(value.size()) );
+		return std::sqrt( std::transform_reduce(begin(value), end(value), 0.0, std::plus{}, mod) / static_cast<double>(value.size()) );
 	}
 	
 	template<typename T>
@@ -90,56 +90,56 @@ namespace scinge
 	requires regular_number<T> 
 	constexpr double circumference(const T radius)
 	{
-		return (2*pi*(double)radius); 
+		return (2*pi* static_cast<double>(radius)); 
 	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double circle_area(const T radius)
 	{
-		return ( pi * pow(radius,2) ); 
+		return ( pi * radius * radius ); 
 	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double sphere_volume(const T radius)
 	{
-		return ( (4.0/3.0) * pi * pow(radius, 3) );
+		return ( (4.0/3.0) * pi * (radius * radius * radius) );
 	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cone_volume(const T radius, const T height)
 	{
-		return ((pi * pow(radius, 2)) * height) / 3.0; 
+		return ((pi * (radius * radius)) * height) / 3.0; 
 	}
 	
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cone_surface_area(const T radius, const T height)
 	{
-		return ( pi * radius * sqrt(pow(radius, 2) + pow(height, 2)) ); 
+		return ( pi * radius * std::sqrt((radius * radius) + (height * height)) ); 
 	}
 	
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cylinder_volume(const T radius, const T height)
 	{
-		return ( pi * pow(radius, 2) * height ); 
+		return ( pi * radius * radius * height ); 
 	}
 	
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cylinder_surface_area(const T radius, const T height)
 	{
-		return (( 2 * pi * radius * height ) + (2 * pi * pow(radius, 2)));
+		return (( 2 * pi * radius * height ) + (2 * pi * radius * radius));
 	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double sphere_surface_area(const T radius)
 	{
-		return  (4 * pi * pow(radius, 2) ); 
+		return  (4 * pi * radius * radius ); 
 	}
 
 	template<typename T>
@@ -202,14 +202,14 @@ namespace scinge
 	requires regular_number<T> 
 	constexpr double cube_volume(const T length)
 	{
-		return pow(length, 3);
+		return (length * length * length);
 	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cube_surface_area(const T length)
 	{
-		return 6 * pow(length, 2);
+		return 6 * (length * length);
 	}
 
 //  Fibonacci using a loop
@@ -275,7 +275,7 @@ namespace scinge
 	requires std::integral<T>
 	constexpr double fibonacci_binet(const T fib_count)
 	{	
-		return pow(5, -0.5) * (pow((1 + sqrt(5))/2, static_cast<double>(fib_count)) - pow((1 - sqrt(5))/2, static_cast<double>(fib_count)));
+		return std::pow(5, -0.5) * (std::pow((1 + std::sqrt(5))/2, static_cast<double>(fib_count)) - std::pow((1 - std::sqrt(5))/2, static_cast<double>(fib_count)));
 	}
 
 	template<typename T>
@@ -297,7 +297,7 @@ namespace scinge
 
 	constexpr double kinetic_energy(const double mass, const double velocity)
 	{ 
-		return ( mass * pow(velocity, 2)) / 2 ;
+		return ( mass * (velocity * velocity)) / 2 ;
 	}
 
 	constexpr double electrical_power(const double current, const double voltage)
