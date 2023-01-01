@@ -39,128 +39,178 @@ namespace scinge
 
 	template<typename T>
 	constexpr double average(const T& value)
-	{ return (std::accumulate(begin(value), end(value), 0.0) / static_cast<double>(value.size())); }
+	{ 
+		return (std::accumulate(begin(value), end(value), 0.0) / static_cast<double>(value.size())); 
+	}
 	
 	template<typename T>
 	constexpr double moving_average(const T& value, const size_t period, const size_t position)
-	{ return (std::accumulate(begin(value)+position, begin(value)+position+period, 0.0) / static_cast<double>(period)); }
+	{ 
+		return (std::accumulate(begin(value)+position, begin(value)+position+period, 0.0) / static_cast<double>(period)); 
+	}
 
 	template<typename T>
 	constexpr double standard_deviation(const T& value)
 	{	
 		const double mean = average(value);
-		return sqrt( std::transform_reduce(begin(value), end(value), 0.0, std::plus{}, [mean](auto &x){return pow((x - mean),2);}) / static_cast<double>(value.size()) );
+		auto mod = [mean](auto &x){return pow((x-mean),2);};
+
+		return std::sqrt( std::transform_reduce(begin(value), end(value), 0.0, std::plus{}, mod) / static_cast<double>(value.size()) );
 	}
 	
 	template<typename T>
 	requires regular_number<T>
 	constexpr T delta(const T start, const T finish)
-	{ return (finish - start); }
+	{ 
+		return (finish - start); 
+	}
 
 	template<typename T>
 	requires regular_number<T>
 	constexpr T delta_2nd(const T start1, const T finish1, const T start2, const T finish2)
-	{ return (delta(finish1 - start1) - delta(finish2 - start2)); }
+	{ 
+		return (delta(finish1 - start1) - delta(finish2 - start2)); 
+	}
 	
 	template<typename T, typename U>
 	requires regular_number<T> && regular_number<U>
 	constexpr double velocity(const T distance, const U time)
-	{ return (distance / (T)time); }	
+	{ 
+		return (distance / (T)time); 
+	}	
 
 	template<typename T, typename U>
 	requires regular_number<T> && regular_number<U>
 	constexpr double acceleration(const T distance1, const U time1, const T distance2, const U time2)
-	{ return velocity(distance2, time2) - velocity(distance1, time1); }	
+	{ 
+		return velocity(distance2, time2) - velocity(distance1, time1); 
+	}	
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double circumference(const T radius)
-	{return (2*pi*(double)radius); }
+	{
+		return (2*pi* static_cast<double>(radius)); 
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double circle_area(const T radius)
-	{return ( pi * pow(radius,2) ); }
+	{
+		return ( pi * radius * radius ); 
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double sphere_volume(const T radius)
-	{return ( (4.0/3.0) * pi * pow(radius, 3) ); }
+	{
+		return ( (4.0/3.0) * pi * (radius * radius * radius) );
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cone_volume(const T radius, const T height)
-	{return ((pi * pow(radius, 2)) * height) / 3.0; }
+	{
+		return ((pi * (radius * radius)) * height) / 3.0; 
+	}
 	
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cone_surface_area(const T radius, const T height)
-	{return ( pi * radius * sqrt(pow(radius, 2) + pow(height, 2)) ); }
+	{
+		return ( pi * radius * std::sqrt((radius * radius) + (height * height)) ); 
+	}
 	
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cylinder_volume(const T radius, const T height)
-	{return ( pi * pow(radius, 2) * height ); }
+	{
+		return ( pi * radius * radius * height ); 
+	}
 	
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cylinder_surface_area(const T radius, const T height)
-	{return (( 2 * pi * radius * height ) + (2 * pi * pow(radius, 2))); }
+	{
+		return (( 2 * pi * radius * height ) + (2 * pi * radius * radius));
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double sphere_surface_area(const T radius)
-	{return  (4 * pi * pow(radius, 2) ); }
+	{
+		return  (4 * pi * radius * radius ); 
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double triangle_area(const T base, const T height)
-	{return ((base * height)/2.0);}
+	{
+		return ((base * height)/2.0);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double trapezoid_area(const T base_side, const T top_side, const T height)
-	{return ((top_side + base_side) * height) / 2.0;}
+	{
+		return ((top_side + base_side) * height) / 2.0;
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr T square_area(const T length)
-	{return (length*length);}
+	{
+		return (length*length);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr T square_perimeter(const T length)
-	{return (length * 4);}
+	{
+		return (length * 4);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr T rectangle_area(const T length, const T width)
-	{return (length * width);}
+	{
+		return (length * width);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr T rectangle_perimeter(const T length, const T width)
-	{return (2 * length) + (2 * width);}
+	{
+		return (2 * length) + (2 * width);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr T box_volume(const T height, const T width, const T depth)
-	{return (height * width * depth);}
+	{
+		return (height * width * depth);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr T box_surface_area(const T height, const T width, const T depth)
-	{return (2 * height * width) + (2 * height * depth) * (2 * width * depth);}
+	{
+		return (2 * height * width) + (2 * height * depth) * (2 * width * depth);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cube_volume(const T length)
-	{return pow(length, 3);}
+	{
+		return (length * length * length);
+	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr double cube_surface_area(const T length)
-	{return 6 * pow(length, 2);}
+	{
+		return 6 * (length * length);
+	}
 
 //  Fibonacci using a loop
 /*	
@@ -225,37 +275,50 @@ namespace scinge
 	requires std::integral<T>
 	constexpr double fibonacci_binet(const T fib_count)
 	{	
-		return pow(5, -0.5) * (pow((1 + sqrt(5))/2, static_cast<double>(fib_count)) - pow((1 - sqrt(5))/2, static_cast<double>(fib_count)));
+		return std::pow(5, -0.5) * (std::pow((1 + std::sqrt(5))/2, static_cast<double>(fib_count)) - std::pow((1 - std::sqrt(5))/2, static_cast<double>(fib_count)));
 	}
 
 	template<typename T>
 	requires regular_number<T> 
 	constexpr T voltage(const T current, const T resistance)
-	{ return current * resistance ;}
+	{ 
+		return current * resistance ;
+	}
 
 	constexpr double current(const double voltage, const double resistance)
-	{ return voltage/resistance ;}
+	{ 
+		return voltage/resistance ;
+	}
 
 	constexpr double resistance(const double voltage, const double current)
-	{ return voltage/current ;}
+	{ 
+		return voltage/current ;
+	}
 
 	constexpr double kinetic_energy(const double mass, const double velocity)
-	{ return ( mass * pow(velocity, 2)) / 2 ;}
+	{ 
+		return ( mass * (velocity * velocity)) / 2 ;
+	}
 
 	constexpr double electrical_power(const double current, const double voltage)
-	{ return ( current * voltage ) ;}
+	{ 
+		return ( current * voltage ) ;
+	}
 
 	constexpr double potential_energy(const double mass, const double height)
-	{ return mass * gravity_acceleration_g * height ;}
+	{ 
+		return mass * gravity_acceleration_g * height ;
+	}
 
 	constexpr double efficiency(const double power_output, const double power_input)
-	{ return (power_output/power_input)/100 ;}
+	{ 
+		return (power_output/power_input)/100 ;
+	}
 
 	constexpr double thermal_energy(const double mass, const double specific_heat, const double T1, const double T2)
-	{ return (mass * specific_heat * delta(T1,T2)) ;}
-
-		
-
+	{ 
+		return (mass * specific_heat * delta(T1,T2)) ;
+	}
 
 
 };
