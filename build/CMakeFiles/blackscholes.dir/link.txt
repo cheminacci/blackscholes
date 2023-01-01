@@ -1,0 +1,1 @@
+/usr/bin/c++ -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -lm CMakeFiles/blackscholes.dir/main.cpp.o -o blackscholes 
