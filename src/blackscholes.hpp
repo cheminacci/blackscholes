@@ -9,6 +9,7 @@
 #include <iostream>
 #include <array>
 
+
 struct Option
 {
 	std::array<double, 15> spot;			
@@ -95,17 +96,17 @@ constexpr double call_option_price(const Option& opt)
 
 	const double nd1 = normal_cdf(d1);
 	const double nd2 = normal_cdf(d2);
-
-	std::cout << "\nd1 is ...\t" << d1 << std::endl;
-	std::cout << "d2 is ...\t" << d2 << std::endl;
-	std::cout << "N(d1) is ...\t" << nd1 << std::endl;
-	std::cout << "N(d2) is ...\t" << nd2 << std::endl;
-
+/*
+	std::cout << "\nd1 is ...\t" << d1 << "\n";
+	std::cout << "d2 is ...\t" << d2 << "\n";
+	std::cout << "N(d1) is ...\t" << nd1 << "\n";
+	std::cout << "N(d2) is ...\t" << nd2 << "\n";
+*/
 	return  ( nd1 * opt.spot[0] ) - ( opt.strike * std::exp(-1 * opt.interest * opt.time) * nd2 ) ;
 }
 
 
-double put_option_price(const Option& opt)
+constexpr double put_option_price(const Option& opt)
 {
 		return ( opt.strike * std::exp(-1 * opt.interest * opt.time) ) - opt.spot[0] + call_option_price(opt) ;
 }

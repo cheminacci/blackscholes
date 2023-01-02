@@ -24,7 +24,7 @@ int main()
 	std::cout << "The current 8 period moving average is:\t" << scinge::moving_average(sbux.spot, 8, 0) << '\n';
 	std::cout << "The current volatility of the asset (sigma) is:\t" << sigma(sbux) << '\n';
 	std::cout << "The current volatility percentage is:\t" << sigma_percent(sbux) << '\n';
-	std::cout << "The call option price for sbux is:\t" << call_option_price(sbux) << '\n';
+	std::cout << "\nThe call option price for sbux is:\t" << call_option_price(sbux) << '\n';
 	std::cout << "The put option price for sbux is:\t" << put_option_price(sbux) << '\n';
 
 	return 0;
