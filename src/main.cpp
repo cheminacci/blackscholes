@@ -1,4 +1,4 @@
-#pragma once
+// main.cpp
 
 #include "blackscholes.hpp"
 #include <iostream>
@@ -28,6 +28,16 @@ int main()
 	std::cout << "The current volatility percentage is:\t" << sigma_percent(sbux) << '\n';
 	std::cout << "\nThe call option price for sbux is:\t" << call_option_price(sbux) << '\n';
 	std::cout << "The put option price for sbux is:\t" << put_option_price(sbux) << '\n';
+
+
+	std::cout << "\nCall Delta:\t" << call_delta(sbux) << '\n';
+	std::cout << "Put Delta:\t" << put_delta(sbux) << '\n';
+	std::cout << "Gamma:\t" << gamma(sbux) << '\n';
+	std::cout << "Vega:\t" << vega(sbux) << '\n';
+	std::cout << "Call Theta:\t" << call_theta(sbux) << '\n';
+	std::cout << "Put Theta:\t" << put_theta(sbux) << '\n';
+	std::cout << "Call Rho:\t" << call_rho(sbux) << '\n';
+	std::cout << "Put Rho:\t" << put_rho(sbux) << '\n';
 
 	return 0;
 }
