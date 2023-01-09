@@ -5,10 +5,7 @@
 #include "scinge.hpp"
 #include <cmath>
 #include <numbers>
-#include <random>
-#include <iostream>
 #include <array>
-
 
 struct Option
 {
@@ -17,7 +14,6 @@ struct Option
 	double interest;	// r
 	double time;	// T or (T - t)
 };
-
 
 using std::numbers::pi;
 
@@ -121,7 +117,6 @@ constexpr double call_theta(const Option &opt)
 	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
 	const double d2 = ( d1 - (sig_p * std::sqrt(opt.time)) ); 
 
-
 	return 	( (opt.spot[0] * normal_pdf(d1) * sig_p) / (-2.0 * std::sqrt(opt.time)) ) \
 				- (opt.interest * opt.strike * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(d2)) ;
 }
@@ -132,10 +127,8 @@ constexpr double put_theta(const Option &opt)
 	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
 	const double d2 = ( d1 - (sig_p * std::sqrt(opt.time)) ); 
 
-
 	return 	( (opt.spot[0] * normal_pdf(d1) * sig_p) / (-2.0 * std::sqrt(opt.time)) ) \
 				+ (opt.interest * opt.strike * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(-d2)) ;
-
 }
 
 constexpr double call_rho(const Option& opt)

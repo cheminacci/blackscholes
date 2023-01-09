@@ -1,4 +1,5 @@
 // scinge.hpp
+#pragma once
 
 #include <cmath>
 #include <cstdint>
