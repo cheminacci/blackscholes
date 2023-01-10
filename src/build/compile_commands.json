@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/cheminacci/blackscholes/src/build",
+  "command": "/usr/bin/g++ -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -lm -g -std=gnu++23 -o CMakeFiles/blackscholes.dir/main.cpp.o -c /home/cheminacci/blackscholes/src/main.cpp",
+  "file": "/home/cheminacci/blackscholes/src/main.cpp"
+}
+]
