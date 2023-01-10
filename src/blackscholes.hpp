@@ -61,17 +61,21 @@ constexpr double normal_pdf(const double& x) // N'(x)
 	return ( (std::pow((pi * 2), -0.5)) * std::exp(-0.5 * x * x) ); 
 }
 
-constexpr double call_option_price(const Option& opt)	// C(S,t)
+constexpr double d1(const Option& opt)
 {
 	const double sig_p = sigma_percent(opt);
+	
+	return ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
+}
 
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-	const double d2 = ( d1 - (sig_p * std::sqrt(opt.time)) ); 
+constexpr double d2(const Option& opt)
+{
+	return d1(opt) - (sigma_percent(opt) * std::sqrt(opt.time)) ;
+}
 
-	const double nd1 = normal_cdf(d1);	// N(d1)
-	const double nd2 = normal_cdf(d2);	// N(d2)
-
-	return  ( nd1 * opt.spot[0] ) - ( opt.strike * std::exp(-1 * opt.interest * opt.time) * nd2 ) ;
+constexpr double call_option_price(const Option& opt)	// C(S,t)
+{
+	return  ( normal_cdf(d1(opt)) * opt.spot[0] ) - ( opt.strike * std::exp(-1 * opt.interest * opt.time) * normal_cdf(d2(opt)) ) ;
 }
 
 constexpr double put_option_price(const Option& opt)	// P(S,t)
@@ -79,74 +83,46 @@ constexpr double put_option_price(const Option& opt)	// P(S,t)
 		return ( opt.strike * std::exp(-1 * opt.interest * opt.time) ) - opt.spot[0] + call_option_price(opt) ;
 }
 
-constexpr double call_delta(const Option &opt)
+constexpr double call_delta(const Option& opt)
 {	
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-
-	return normal_cdf(d1);
+	return normal_cdf(d1(opt));
 }
 
-constexpr double put_delta(const Option &opt)
+constexpr double put_delta(const Option& opt)
 {	
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-
-	return normal_cdf(d1) - 1;
+	return normal_cdf(d1(opt)) - 1;
 }
 
-constexpr double gamma(const Option &opt)
+constexpr double gamma(const Option& opt)
 {
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-	
-	return normal_pdf(d1) / (opt.spot[0] * sig_p * std::sqrt(opt.time));	
+	return normal_pdf(d1(opt)) / (opt.spot[0] * sigma_percent(opt) * std::sqrt(opt.time));	
 }
 
-constexpr double vega(const Option &opt)
+constexpr double vega(const Option& opt)
 {	
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-
-	return opt.spot[0] * normal_pdf(d1) * std::sqrt(opt.time);	
+	return opt.spot[0] * normal_pdf(d1(opt)) * std::sqrt(opt.time);	
 }
 
-constexpr double call_theta(const Option &opt)
+constexpr double call_theta(const Option& opt)
 {	
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-	const double d2 = ( d1 - (sig_p * std::sqrt(opt.time)) ); 
-
-	return 	( (opt.spot[0] * normal_pdf(d1) * sig_p) / (-2.0 * std::sqrt(opt.time)) ) \
-				- (opt.interest * opt.strike * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(d2)) ;
+	return 	( (opt.spot[0] * normal_pdf(d1(opt)) * sigma_percent(opt)) / (-2.0 * std::sqrt(opt.time)) ) \
+				- (opt.interest * opt.strike * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(d2(opt))) ;
 }
 
-constexpr double put_theta(const Option &opt)
+constexpr double put_theta(const Option& opt)
 {	
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-	const double d2 = ( d1 - (sig_p * std::sqrt(opt.time)) ); 
-
-	return 	( (opt.spot[0] * normal_pdf(d1) * sig_p) / (-2.0 * std::sqrt(opt.time)) ) \
-				+ (opt.interest * opt.strike * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(-d2)) ;
+	return 	( (opt.spot[0] * normal_pdf(d1(opt)) * sigma_percent(opt)) / (-2.0 * std::sqrt(opt.time)) ) \
+				+ (opt.interest * opt.strike * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(-d2(opt))) ;
 }
 
 constexpr double call_rho(const Option& opt)
 {	
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-	const double d2 = ( d1 - (sig_p * std::sqrt(opt.time)) ); 
-
-	return opt.strike * opt.time * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(d2) ;
+	return opt.strike * opt.time * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(d2(opt)) ;
 }
 
 constexpr double put_rho(const Option& opt)
 {	
-	const double sig_p = sigma_percent(opt);
-	const double d1 = ( std::log(opt.spot[0]/opt.strike) + ((opt.interest + (std::pow(sig_p,2)/2)) * opt.time) ) / ( sig_p * std::sqrt(opt.time) );
-	const double d2 = ( d1 - (sig_p * std::sqrt(opt.time)) ); 
-
-	return -opt.strike * opt.time * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(-d2) ;
+	return -opt.strike * opt.time * std::exp(-1.0 * opt.interest * opt.time) * normal_cdf(-d2(opt)) ;
 }
 
 
