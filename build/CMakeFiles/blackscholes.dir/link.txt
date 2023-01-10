@@ -1,1 +1,1 @@
-/usr/bin/c++ -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -lm CMakeFiles/blackscholes.dir/main.cpp.o -o blackscholes 
+/usr/bin/c++ -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -Wuninitialized -fanalyzer -lm CMakeFiles/blackscholes.dir/main.cpp.o -o blackscholes 

@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = 
 
-CXX_FLAGS = -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -lm -std=gnu++23
+CXX_FLAGS = -O2 -Wall -Wextra -Werror -Wpedantic -Wunused -Wconversion -Wuninitialized -fanalyzer -lm -std=gnu++23
 
